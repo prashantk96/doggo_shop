@@ -4,7 +4,7 @@ It fetches random image with help of api and saves it to local storage with help
 
 Also there is cart to add product and also function to remove products.
 
-also used lotti animation.
+also used lottie animation.
 
 ## Getting Started
 
