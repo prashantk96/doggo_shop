@@ -27,6 +27,7 @@ class HomeScreen extends StatelessWidget {
           centerTitle: true,
           title: const GradientText(
             'The Doggo Shop',
+            // ignore: unnecessary_const
             style: const TextStyle(fontSize: 37, fontFamily: 'PoetsenOne'),
             gradient: LinearGradient(
               colors: [Colors.red, Colors.white, Colors.green],
