@@ -12,6 +12,8 @@ class HistoryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final historyBox = GetStorage('history');
     log(historyBox.getValues().toString());
+
+    //historyBox.getValues() fetches values from historyBox and then List<Map<String, dynamic>>.from() creates new list and store it in history variable
     RxList<Map<String, dynamic>> history =
         List<Map<String, dynamic>>.from(historyBox.getValues() ?? []).obs;
     log('breeds: ${history.toString()}');
@@ -44,6 +46,7 @@ class HistoryScreen extends StatelessWidget {
           Flexible(
               child: ElevatedButton(
                   onPressed: () async {
+                    //removes history container and then set history value to empty list
                     historyBox.erase().then(
                       (value) {
                         history.value = [];

@@ -1,6 +1,7 @@
 import 'package:doggo_shop/api/api.dart';
 import 'package:doggo_shop/controllers/dog_price_controller.dart';
 import 'package:doggo_shop/main.dart';
+import 'package:doggo_shop/widgets/gradient_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -18,24 +19,19 @@ class HomeScreen extends StatelessWidget {
         Get.put(AnimationControllerX());
 
     //instance of api class
-    Api api = Api();
+    Api api = Get.put(Api());
 
     mq = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: ShaderMask(
-            blendMode: BlendMode.srcATop,
-            shaderCallback: (Rect bounds) {
-              return const LinearGradient(
-                colors: [Colors.red, Colors.white, Colors.green],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ).createShader(bounds);
-            },
-            child: const Text(
-              'The Doggo Shop',
-              style: TextStyle(fontSize: 36.0, fontFamily: 'PoetsenOne'),
+          title: const GradientText(
+            'The Doggo Shop',
+            style: const TextStyle(fontSize: 37, fontFamily: 'PoetsenOne'),
+            gradient: LinearGradient(
+              colors: [Colors.red, Colors.white, Colors.green],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
           ),
           actions: [
@@ -159,6 +155,7 @@ class HomeScreen extends StatelessWidget {
               Expanded(
                 child: FloatingActionButton(
                   onPressed: () {
+                    //fetchRandomDogImage returns string then we initiates newUrl with that string of url then generateRandomPrice generates random number with adding 20000 into it then we store data into history container by using _saveHistory method
                     api.fetchRandomDogImage().then((url) {
                       newUrl.value = url;
                     }).then((price) {

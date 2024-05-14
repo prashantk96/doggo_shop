@@ -10,7 +10,7 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cartStorage = GetStorage('cart');
-
+    //cartStorage.getValues() fetches values from cartStorage and then List<Map<String, dynamic>>.from() creates new list and store it in cartItems variable
     RxList<Map<String, dynamic>> cartItems =
         List<Map<String, dynamic>>.from(cartStorage.getValues() ?? []).obs;
 
@@ -52,9 +52,12 @@ class CartScreen extends StatelessWidget {
                               TextButton(
                                 child: const Text('Remove'),
                                 onPressed: () {
-                                  cartItems.removeAt(index);
-                                  cartStorage.remove(item['imageUrl']);
-                                  _calculateTotalPrice(cartItems);
+                                  cartItems.removeAt(
+                                      index); //removing data from current objects index
+                                  cartStorage.remove(item[
+                                      'imageUrl']); // remove item from cart storage with current items imageUrl passing as key
+                                  _calculateTotalPrice(
+                                      cartItems); //and again calculating price in available products in cart
                                   Navigator.pop(context);
                                 },
                               ),
@@ -97,6 +100,7 @@ class CartScreen extends StatelessWidget {
     );
   }
 
+// it returns int which is of reactive type we can access it by variable.value
   RxInt _calculateTotalPrice(RxList<Map<String, dynamic>> cartItems) {
     RxInt totalPrice = 0.obs;
     for (var item in cartItems) {
