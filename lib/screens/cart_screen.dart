@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:doggo_shop/controllers/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,11 +10,6 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final cc = Get.find<CartController>();
     final cartStorage = GetStorage('cart');
-    //cartStorage.getValues() fetches values from cartStorage and then List<Map<String, dynamic>>.from() creates new list and store it in cartItems variable
-    RxList<Map<String, dynamic>> cartItems =
-        List<Map<String, dynamic>>.from(cartStorage.getValues() ?? []).obs;
-
-    log(cartItems.toString());
 
     return Scaffold(
       appBar: AppBar(
