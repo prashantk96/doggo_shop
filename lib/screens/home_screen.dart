@@ -1,5 +1,7 @@
 import 'package:doggo_shop/api/api.dart';
+import 'package:doggo_shop/controllers/cart_controller.dart';
 import 'package:doggo_shop/controllers/dog_price_controller.dart';
+import 'package:doggo_shop/controllers/history_controller.dart';
 import 'package:doggo_shop/main.dart';
 import 'package:doggo_shop/widgets/gradient_text.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,8 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   @override
   Widget build(BuildContext context) {
+    HistoryController hc = Get.put(HistoryController());
+    CartController cc = Get.put(CartController());
     DogPriceController c = Get.put(
         DogPriceController()); //instance of DogPriceController for random price
     RxString newUrl = ''.obs;
@@ -38,6 +42,7 @@ class HomeScreen extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
+                  cc.fetchCartItems();
                   Get.toNamed('/cart');
                 },
                 icon: const Icon(
@@ -144,7 +149,9 @@ class HomeScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(left: 35.0),
                   child: FloatingActionButton(
+                      heroTag: 'historyButton',
                       onPressed: () {
+                        hc.fetchHistory();
                         Get.toNamed('/history');
                       },
                       child: const Text(
@@ -155,6 +162,7 @@ class HomeScreen extends StatelessWidget {
               const Spacer(),
               Expanded(
                 child: FloatingActionButton(
+                  heroTag: 'newdogbutton',
                   onPressed: () {
                     //fetchRandomDogImage returns string then we initiates newUrl with that string of url then generateRandomPrice generates random number with adding 20000 into it then we store data into history container by using _saveHistory method
                     api.fetchRandomDogImage().then((url) {

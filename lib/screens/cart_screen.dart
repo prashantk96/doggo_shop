@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:doggo_shop/controllers/cart_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -9,6 +10,7 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cc = Get.find<CartController>();
     final cartStorage = GetStorage('cart');
     //cartStorage.getValues() fetches values from cartStorage and then List<Map<String, dynamic>>.from() creates new list and store it in cartItems variable
     RxList<Map<String, dynamic>> cartItems =
@@ -25,9 +27,9 @@ class CartScreen extends StatelessWidget {
           Expanded(
             child: Obx(() {
               return ListView.builder(
-                itemCount: cartItems.length,
+                itemCount: cc.cartItems.length,
                 itemBuilder: (context, index) {
-                  final item = cartItems[index];
+                  final item = cc.cartItems[index];
                   return ListTile(
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(
@@ -52,12 +54,12 @@ class CartScreen extends StatelessWidget {
                               TextButton(
                                 child: const Text('Remove'),
                                 onPressed: () {
-                                  cartItems.removeAt(
+                                  cc.cartItems.removeAt(
                                       index); //removing data from current objects index
                                   cartStorage.remove(item[
                                       'imageUrl']); // remove item from cart storage with current items imageUrl passing as key
-                                  _calculateTotalPrice(
-                                      cartItems); //and again calculating price in available products in cart
+                                  _calculateTotalPrice(cc
+                                      .cartItems); //and again calculating price in available products in cart
                                   Navigator.pop(context);
                                 },
                               ),
@@ -78,14 +80,14 @@ class CartScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Total Items: ${cartItems.length}',
+                    'Total Items: ${cc.cartItems.length}',
                     style: const TextStyle(
                         fontSize: 18,
                         color: Colors.indigo,
                         fontWeight: FontWeight.w500),
                   ),
                   Text(
-                    'Total Price: ₹${_calculateTotalPrice(cartItems)}',
+                    'Total Price: ₹${_calculateTotalPrice(cc.cartItems)}',
                     style: const TextStyle(
                         fontSize: 18,
                         color: Colors.indigo,

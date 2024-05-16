@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:doggo_shop/controllers/history_controller.dart';
 import 'package:doggo_shop/main.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -10,13 +11,9 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final hc = Get.find<HistoryController>();
     final historyBox = GetStorage('history');
     log(historyBox.getValues().toString());
-
-    //historyBox.getValues() fetches values from historyBox and then List<Map<String, dynamic>>.from() creates new list and store it in history variable
-    RxList<Map<String, dynamic>> history =
-        List<Map<String, dynamic>>.from(historyBox.getValues() ?? []).obs;
-    log('breeds: ${history.toString()}');
 
     return Scaffold(
       appBar: AppBar(
@@ -29,9 +26,9 @@ class HistoryScreen extends StatelessWidget {
                 height: mq.height * 0.8,
                 child: ListView.builder(
                   physics: const ScrollPhysics(parent: BouncingScrollPhysics()),
-                  itemCount: history.length,
+                  itemCount: hc.history.length,
                   itemBuilder: (context, index) {
-                    final item = history[index];
+                    final item = hc.history[index];
                     return ListTile(
                       leading: Image.network(
                         item['imageUrl'],
@@ -49,7 +46,7 @@ class HistoryScreen extends StatelessWidget {
                     //removes history container and then set history value to empty list
                     historyBox.erase().then(
                       (value) {
-                        history.value = [];
+                        hc.history.value = [];
                       },
                     );
                   },
